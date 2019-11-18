@@ -8,7 +8,7 @@ This repository contains the AWS Lambda functions for adding new subscribers to 
 
 ## Subscribe endpoint
 
-** POST /subscribe **
+**POST /subscribe**
 
 Adds the given email address to the Mailchimp audience if it's not already there.
 
@@ -35,5 +35,40 @@ If the email address is already in the audience, a `200 OK` response with the fo
 ```json
 {
   "status": "ALREADY_SUBSCRIBED"
+}
+```
+
+## Send Results endpoint
+
+**POST /send-results**
+
+Sends the Compensation Mindset and associated resources to the given email address.
+
+_Request Payload:_
+
+```json
+{
+  "email": "test@example.com",
+  "mindset_id": 1,
+  "state": "CA"
+}
+```
+
+_Response Payloads:_
+
+If the results were successfully sent, a `200 OK` response with the following is returned:
+
+```json
+{
+  "status": "RESULTS_SENT"
+}
+```
+
+If one of the upstream APIs fails, a `424 FAILED DEPENDENCY` response with the following is returned:
+
+```json
+{
+  "status": "UPSTREAM_API_ERROR",
+  "error": "Descriptive error message"
 }
 ```
