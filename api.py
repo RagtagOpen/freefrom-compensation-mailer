@@ -9,6 +9,7 @@ import requests
 
 MAILCHIMP_API_KEY = os.getenv("MAILCHIMP_API_KEY")
 MAILCHIMP_AUDIENCE_ID = os.getenv("MAILCHIMP_AUDIENCE_ID")
+MANDRILL_API_KEY = os.getenv("MANDRILL_API_KEY")
 FREEFROM_API_ROOT = os.getenv("FREEFROM_API_ROOT")
 
 assert (
@@ -17,6 +18,9 @@ assert (
 assert (
     MAILCHIMP_AUDIENCE_ID is not None
 ), "Please set the MAILCHIMP_AUDIENCE_ID environment variable"
+assert (
+    MANDRILL_API_KEY is not None
+), "Please set the MANDRILL_API_KEY environment variable"
 
 MAILCHIMP_DC = MAILCHIMP_API_KEY.split("-")[-1]
 
@@ -176,14 +180,13 @@ def send_results(email_address: str, mindset_id: int, state: str) -> dict:
     mandrill_response = requests.post(
         "https://mandrillapp.com/api/1.0/messages/send-template.json",
         json={
-            "key": MAILCHIMP_API_KEY,
-            "template_name": "compensation-results",
-            "template_content": [],
+            "key": MANDRILL_API_KEY,
+            "template_name": "compass-results",
+            "template_content": [{"name": "main", "content": content}],
             "message": {
-                "html": content,
-                "subject": "Your FreeFrom Compensation Quiz Results",
-                "from_email": "info@freefrom.org",
-                "from_name": "FreeFrom Compensation Quiz",
+                "subject": "Your FreeFrom Compensation Compass Results",
+                "from_email": "compass@freefrom.org",
+                "from_name": "FreeFrom Compensation Compass",
                 "to": [{"email": email_address}],
                 "track_opens": True,
                 "auto_text": True,
