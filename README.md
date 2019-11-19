@@ -64,6 +64,8 @@ If the results were successfully sent, a `200 OK` response with the following is
 }
 ```
 
+_The response status may also be `RESULTS_QUEUED` if Mandrill hasn't yet sent the email._
+
 If one of the upstream APIs fails, a `424 FAILED DEPENDENCY` response with the following is returned:
 
 ```json

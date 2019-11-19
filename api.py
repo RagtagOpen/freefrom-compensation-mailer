@@ -137,20 +137,21 @@ def send_results(email_address: str, mindset_id: int, state: str) -> dict:
     other_categories = [
         x for x in categories if not x["id"] == mindset["resource_category_id"]
     ]
-    print(mindset, category, other_categories)
+    # print(mindset, category, other_categories)
     slug = mindset["slug"]
     slug = re.sub(r"^the-", "", slug)
     content = []
-    content += [f"<h1>Your Compensation Mindset</h1>"]
+    content += [f"<h1 style='font-weight: normal'>Your Compensation Mindset</h1>"]
     content += [
         (
-            f'<img style="display: block; margin: 16px auto;" '
+            f'<img style="display: block; margin: 16px auto; width: 195px; '
+            f'height: auto; max-width: 100%;" '
             f'src="https://s3.amazonaws.com/freefrom-compensation-dev/images/mindsets/'
             f'{slug}.png" '
             f'alt="">'
         )
     ]
-    content += [f"<p><b>{mindset['name']}</b></p>"]
+    content += [f"<h2 style='text-align: center'>{mindset['name']}</h2>"]
     content += [f"<p>{x}</p>" for x in mindset["description"].split("\n")]
     content += [
         (
@@ -168,7 +169,7 @@ def send_results(email_address: str, mindset_id: int, state: str) -> dict:
             f"<p>No person fits perfectly within only one Compensation Mindset. "
             f"You must decide which type of compensation is best for you. "
             f"Below, you can find information about the other compensation options in "
-            f"{state_name}</p>"
+            f"{state_name}.</p>"
         )
     ]
     for other_category in other_categories:
@@ -176,7 +177,7 @@ def send_results(email_address: str, mindset_id: int, state: str) -> dict:
             f"<p><b>{other_category['name']}:</b> {other_category['description']}</p>"
         ]
     content = "\n".join(content)
-    print(content)
+    # print(content)
     mandrill_response = requests.post(
         "https://mandrillapp.com/api/1.0/messages/send-template.json",
         json={
@@ -204,7 +205,11 @@ def send_results(email_address: str, mindset_id: int, state: str) -> dict:
             ),
             "statusCode": 424,
         }
-    return {"body": json.dumps({"status": "RESULTS_SENT"}), "statusCode": 200}
+    mandrill_status = mandrill_response.json()[0].get("status", "").upper()
+    return {
+        "body": json.dumps({"status": f"RESULTS_{mandrill_status}"}),
+        "statusCode": 200,
+    }
 
 
 def lambda_handler(event: dict, context: object) -> dict:
