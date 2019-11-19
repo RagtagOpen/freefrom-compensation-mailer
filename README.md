@@ -6,6 +6,8 @@ FreeFrom is a nonprofit dedicated to helping survivors of domestic violence achi
 
 This repository contains the AWS Lambda functions for adding new subscribers to the mailing list and for emailing Compensation Quiz results to quiz takers.
 
+Additionally it contains a copy of the HTML email template for Mandrill. Changes to this template need to be manually copied over to Mandrill.
+
 ## Subscribe endpoint
 
 **POST /subscribe**
