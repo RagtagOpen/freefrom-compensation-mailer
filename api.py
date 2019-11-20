@@ -155,8 +155,8 @@ def send_results(email_address: str, mindset_id: int, state: str) -> dict:
     content += [f"<p>{x}</p>" for x in mindset["description"].split("\n")]
     content += [
         (
-            f"<p>The {mindset['name']}&rsquo;s goals and priorities are best matched "
-            f"with a <b>{category['name'].lower()}</b> as a compensation option.</p>"
+            f"<p>{mindset['name']}&rsquo;s goals and priorities are best matched "
+            f"with <b>{category['name']}</b> as a compensation option.</p>"
         )
     ]
     content += [f"<p>{x}</p>" for x in category["description"].split("\n")]
