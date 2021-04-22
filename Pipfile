@@ -11,6 +11,7 @@ ipython = "*"
 [packages]
 boto3 = "*"
 requests = "*"
+pygments = ">=2.7.3" # pinning pygments to >= 2.7.3 for CVE-2021-20270
 
 [requires]
 python_version = "3.8"
